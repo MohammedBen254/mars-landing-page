@@ -1,0 +1,2013 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr" data-lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="MARS — Gérez vos réseaux sociaux automatiquement avec l'intelligence artificielle."/>
+  <title>MARS — Votre Social Media sur Pilote Automatique</title>
+
+  <!-- Fonts: Same as app -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+  <!-- Icons: Font Awesome — same as app -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <style>
+    /* ============================================================
+       DESIGN TOKENS — Mirrored exactly from base.html
+    ============================================================ */
+    :root {
+      --primary:        #0F172A;
+      --primary-bg:     #F1F5F9;
+      --primary-light:  #1E293B;
+      --primary-dark:   #020617;
+      --accent:         #3B82F6;
+      --accent-light:   #EFF6FF;
+      --accent-dark:    #1D4ED8;
+      --purple:         #8B5CF6;
+      --success:        #10B981;
+      --warning:        #F59E0B;
+      --danger:         #EF4444;
+
+      --bg-page:        #f8fafc;
+      --bg-card:        #FFFFFF;
+      --bg-sidebar:     #F8FAFC;
+
+      --font-serif:     'Instrument Serif', serif;
+      --font-sans:      'Inter', sans-serif;
+
+      --text-main:      #0F172A;
+      --text-muted:     #64748B;
+      --text-label:     #94A3B8;
+      --border:         #E2E8F0;
+      --border-light:   #F1F5F9;
+      --border-accent:  rgba(15, 23, 42, 0.08);
+
+      --transition:     all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      --radius-sm:      8px;
+      --radius-md:      12px;
+      --radius-lg:      20px;
+
+      --shadow-subtle:  0 1px 2px rgba(0,0,0,0.05);
+      --shadow-md:      0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+      --shadow-hover:   0 10px 15px -3px rgba(0,0,0,0.1);
+    }
+
+    /* ============================================================
+       RESET
+    ============================================================ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.01em;
+    }
+    img { max-width: 100%; display: block; }
+    a  { color: inherit; text-decoration: none; }
+    button { cursor: pointer; border: none; outline: none; font-family: var(--font-sans); }
+
+    /* RTL support */
+    [dir="rtl"] { letter-spacing: 0; }
+    [dir="rtl"] .nav-links { flex-direction: row-reverse; }
+    [dir="rtl"] .hero-grid { direction: rtl; }
+    [dir="rtl"] .problem-card, [dir="rtl"] .feature-card { text-align: right; }
+    [dir="rtl"] .pill-body { text-align: right; }
+    [dir="rtl"] .plan-features li { flex-direction: row-reverse; }
+    [dir="rtl"] .testi-author { flex-direction: row-reverse; }
+    [dir="rtl"] .footer-grid { direction: rtl; }
+    [dir="rtl"] .stat-lbl { flex-direction: row-reverse; }
+
+    /* ============================================================
+       LAYOUT UTILITIES
+    ============================================================ */
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 28px; }
+    .section    { padding: 96px 0; }
+    .section-sm { padding: 64px 0; }
+    .text-center { text-align: center; }
+
+    /* ============================================================
+       TYPOGRAPHY — matching app
+    ============================================================ */
+    h1, h2, h3, .serif {
+      font-family: var(--font-serif); font-weight: 400; font-style: normal;
+    }
+    h1 { font-size: clamp(2.6rem, 5vw, 4rem); line-height: 1.1; }
+    h2 { font-size: clamp(1.9rem, 3.5vw, 2.8rem); line-height: 1.15; }
+    h3 { font-size: 1.1rem; font-family: var(--font-sans); font-weight: 600; }
+
+    /* ============================================================
+       SECTION LABEL — small uppercase pill like app badges
+    ============================================================ */
+    .section-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 4px 12px; border-radius: 4px;
+      background: var(--accent-light); border: 1px solid rgba(59,130,246,0.2);
+      font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.06em; color: var(--accent);
+      margin-bottom: 20px;
+    }
+    .section-label i { font-size: 0.7rem; }
+
+    /* ============================================================
+       BUTTONS — identical to app
+    ============================================================ */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 10px 20px; border-radius: var(--radius-sm);
+      font-weight: 600; font-size: 0.88rem; cursor: pointer;
+      transition: var(--transition); text-decoration: none;
+      border: 1px solid transparent; font-family: var(--font-sans);
+    }
+    .btn-primary { background: linear-gradient(135deg, #0F172A 0%, #1e3361 100%); color: #fff; box-shadow: 0 4px 14px rgba(15,23,42,0.25); }
+    .btn-primary:hover { background: linear-gradient(135deg, #1a2d4a 0%, #2563eb 100%); transform: translateY(-1px); box-shadow: 0 8px 20px rgba(37,99,235,0.25); opacity: 1; }
+    .btn-secondary { background: white; color: var(--text-main); border-color: var(--border); }
+    .btn-secondary:hover { background: var(--bg-sidebar); border-color: var(--text-main); }
+    .btn-lg { padding: 14px 28px; font-size: 0.95rem; }
+
+    /* ============================================================
+       NAV — clean SaaS navbar
+    ============================================================ */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      height: 64px; background: rgba(248,250,252,0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid transparent;
+      transition: var(--transition);
+    }
+    #nav.scrolled { border-bottom-color: var(--border); }
+    .nav-inner {
+      height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-family: var(--font-serif); font-size: 1.4rem; color: var(--text-main);
+      flex-shrink: 0;
+    }
+    .nav-logo-icon {
+      width: 34px; height: 34px; border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #0F172A 0%, #1e3361 100%);
+      display: flex; align-items: center; justify-content: center;
+      transition: var(--transition); overflow: hidden;
+      box-shadow: 0 2px 8px rgba(15,23,42,0.2);
+    }
+    .nav-logo:hover .nav-logo-icon { box-shadow: 0 4px 12px rgba(37,99,235,0.35); }
+    .nav-logo-icon img { width: 100%; height: 100%; object-fit: contain; padding: 3px; }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 2px;
+      list-style: none; flex: 1; justify-content: center;
+    }
+    .nav-links a {
+      padding: 7px 12px; font-size: 0.82rem; color: var(--text-muted);
+      font-weight: 500; border-radius: var(--radius-sm); transition: var(--transition);
+      white-space: nowrap; border: 1px solid transparent;
+    }
+    .nav-links a:hover { color: var(--text-main); background: white; box-shadow: var(--shadow-subtle); border-color: var(--border); }
+
+    .nav-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+
+    /* Lang Switcher */
+    .lang-switcher {
+      display: flex; align-items: center; gap: 2px;
+      background: var(--bg-sidebar); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 3px;
+    }
+    .lang-btn {
+      padding: 4px 10px; border-radius: 5px; font-size: 0.72rem;
+      font-weight: 700; color: var(--text-muted); background: transparent;
+      transition: var(--transition); cursor: pointer; border: none;
+      font-family: var(--font-sans);
+    }
+    .lang-btn.active { background: white; color: var(--text-main); box-shadow: var(--shadow-subtle); }
+    .lang-btn:hover:not(.active) { color: var(--text-main); }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    #hero {
+      min-height: 100vh; display: flex; align-items: center;
+      padding: 100px 0 80px;
+      background: linear-gradient(160deg, #f8fafc 0%, #eff6ff 45%, #f5f0ff 75%, #f8fafc 100%);
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 4px 10px 4px 6px; border-radius: 100px;
+      background: white; border: 1px solid var(--border);
+      box-shadow: var(--shadow-subtle);
+      font-size: 0.78rem; font-weight: 600; color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+    .hero-eyebrow .dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--success); animation: blink 2s infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .hero-headline { margin-bottom: 20px; color: var(--text-main); }
+    .hero-headline em {
+      font-style: italic;
+      background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: 1rem; color: var(--text-muted); margin-bottom: 36px;
+      line-height: 1.7; max-width: 460px;
+    }
+    .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 40px; }
+    .hero-proof {
+      display: flex; align-items: center; gap: 16px;
+      padding-top: 32px; border-top: 1px solid var(--border-light);
+    }
+    .proof-avatars { display: flex; }
+    .proof-avatars span {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 2px solid var(--bg-page);
+      background: var(--primary); color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem; font-weight: 700;
+      margin-left: -8px;
+    }
+    .proof-avatars span:first-child { margin-left: 0; }
+    .proof-text { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+    .proof-text strong { color: var(--text-main); }
+
+    /* Hero Visual */
+    .hero-visual { position: relative; }
+    .hero-dashboard {
+      background: white; border: 1px solid var(--border);
+      border-radius: var(--radius-lg); overflow: hidden;
+      box-shadow: var(--shadow-hover);
+      animation: floatUp 5s ease-in-out infinite;
+    }
+    @keyframes floatUp { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+    .hero-dashboard img {
+      width: 100%; display: block;
+      border-radius: var(--radius-lg);
+    }
+    /* Dashboard placeholder when image fails */
+    .dash-placeholder {
+      height: 340px; background: var(--bg-sidebar);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 16px; color: var(--text-label); font-size: 0.85rem;
+    }
+    .dash-placeholder i { font-size: 3rem; opacity: 0.25; }
+
+    /* Floating cards */
+    .float-card {
+      position: absolute; background: white; border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 12px 16px;
+      box-shadow: var(--shadow-md);
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.82rem; white-space: nowrap;
+    }
+    .float-card.top-left  { top: -18px; left: -24px; animation: floatAlt 4s ease-in-out infinite; }
+    .float-card.bot-right { bottom: -18px; right: -24px; animation: floatAlt 4s ease-in-out infinite 1.5s; }
+    @keyframes floatAlt { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+    .float-card .fc-icon {
+      width: 30px; height: 30px; border-radius: var(--radius-sm);
+      background: var(--accent-light); border: 1px solid rgba(59,130,246,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; color: var(--accent);
+    }
+    .float-card .fc-val { font-weight: 700; color: var(--text-main); }
+    .float-card .fc-lbl { color: var(--text-label); font-size: 0.72rem; }
+
+    /* ============================================================
+       MARQUEE
+    ============================================================ */
+    #marquee {
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      padding: 14px 0; overflow: hidden; background: white;
+    }
+    .marquee-track {
+      display: flex; gap: 40px; width: fit-content;
+      animation: mscroll 28s linear infinite;
+    }
+    @keyframes mscroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    .marquee-item {
+      display: flex; align-items: center; gap: 8px; white-space: nowrap;
+      font-size: 0.82rem; font-weight: 500; color: var(--text-muted);
+    }
+    .marquee-item i { color: var(--accent); font-size: 0.8rem; }
+    .marquee-sep { color: var(--border); font-size: 1rem; }
+
+    /* ============================================================
+       CARD — same as app card
+    ============================================================ */
+    .card {
+      background: var(--bg-card); border-radius: var(--radius-md);
+      border: 1px solid var(--border); padding: 24px;
+      transition: var(--transition);
+    }
+    .card:hover { border-color: var(--accent); box-shadow: 0 4px 12px rgba(59,130,246,0.08); }
+
+    /* ============================================================
+       PROBLEM SECTION
+    ============================================================ */
+    #problem { background: var(--bg-page); }
+    .problem-intro { max-width: 560px; margin: 0 auto 56px; }
+    .problem-intro p { color: var(--text-muted); font-size: 1rem; margin-top: 14px; line-height: 1.7; }
+    .problem-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+    .problem-card {
+      background: white; border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 28px;
+      transition: var(--transition);
+    }
+    .problem-card:hover { border-color: var(--danger); transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .pc-icon {
+      width: 44px; height: 44px; border-radius: var(--radius-sm);
+      background: var(--bg-sidebar); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted); font-size: 1rem; margin-bottom: 18px;
+      transition: var(--transition);
+    }
+    .problem-card:hover .pc-icon { border-color: var(--danger); color: var(--danger); }
+    .problem-card h3 { font-size: 0.95rem; margin-bottom: 10px; }
+    .problem-card p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.65; }
+
+    /* ============================================================
+       SOLUTION SECTION
+    ============================================================ */
+    #solution { background: white; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .solution-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+    .solution-pills { display: flex; flex-direction: column; gap: 12px; }
+    .s-pill {
+      display: flex; align-items: flex-start; gap: 16px;
+      background: var(--bg-page); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 20px;
+      transition: var(--transition); cursor: default;
+    }
+    .s-pill:hover { border-color: var(--accent); background: white; box-shadow: 0 4px 12px rgba(59,130,246,0.08); }
+    .s-pill-icon {
+      width: 38px; height: 38px; border-radius: var(--radius-sm); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: white; border: 1px solid var(--border);
+      color: var(--text-muted); font-size: 0.9rem;
+      transition: var(--transition);
+    }
+    .s-pill:hover .s-pill-icon { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+    .s-pill h3 { font-size: 0.9rem; margin-bottom: 4px; }
+    .s-pill p  { color: var(--text-muted); font-size: 0.82rem; line-height: 1.6; }
+
+    /* AI demo panel */
+    .ai-panel {
+      background: var(--bg-page); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 0; overflow: hidden;
+    }
+    .ai-panel-header {
+      background: white; border-bottom: 1px solid var(--border);
+      padding: 14px 20px; display: flex; align-items: center; gap: 10px;
+    }
+    .ai-panel-header .dots { display: flex; gap: 6px; }
+    .ai-panel-header .dots span { width: 10px; height: 10px; border-radius: 50%; background: var(--border); }
+    .ai-panel-header .dots span:first-child { background: #EF4444; }
+    .ai-panel-header .dots span:nth-child(2) { background: #F59E0B; }
+    .ai-panel-header .dots span:nth-child(3) { background: #10B981; }
+    .ai-panel-header h4 { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); letter-spacing: 0.02em; margin-left: auto; }
+    .ai-panel-body { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+    .ai-row {
+      background: white; border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 14px 16px; font-size: 0.82rem;
+    }
+    .ai-row.ai-prompt { color: var(--text-label); }
+    .ai-row.ai-result { line-height: 1.65; }
+    .ai-result-label {
+      font-size: 0.64rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.06em; color: var(--success); margin-bottom: 8px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .ai-result-label::before { content:''; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--success); }
+    .platform-chips { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+    .platform-chip {
+      padding: 3px 10px; border-radius: 4px; font-size: 0.72rem; font-weight: 600;
+      background: var(--bg-sidebar); border: 1px solid var(--border);
+      color: var(--text-muted); display: flex; align-items: center; gap: 5px;
+    }
+
+    /* ============================================================
+       SCREENSHOT FRAME — used in solution section
+    ============================================================ */
+    .screenshot-frame {
+      border: 1px solid var(--border); border-radius: var(--radius-lg);
+      overflow: hidden; box-shadow: var(--shadow-hover); background: white;
+      animation: floatUp 5s ease-in-out infinite;
+    }
+    .screenshot-bar {
+      background: var(--bg-sidebar); border-bottom: 1px solid var(--border);
+      padding: 10px 16px; display: flex; align-items: center; gap: 10px;
+    }
+    .screenshot-bar .dots { display: flex; gap: 6px; }
+    .screenshot-bar .dots span { width: 10px; height: 10px; border-radius: 50%; background: var(--border); }
+    .screenshot-bar .dots span:nth-child(1) { background: #EF4444; }
+    .screenshot-bar .dots span:nth-child(2) { background: #F59E0B; }
+    .screenshot-bar .dots span:nth-child(3) { background: #10B981; }
+    .url-bar {
+      flex: 1; background: white; border: 1px solid var(--border);
+      border-radius: 4px; padding: 3px 12px;
+      font-size: 0.72rem; color: var(--text-muted); text-align: center;
+    }
+    .screenshot-frame > img { width: 100%; display: block; }
+
+    /* ============================================================
+       FEATURES SECTION
+    ============================================================ */
+    #features { background: var(--bg-page); }
+    .features-header { max-width: 560px; margin: 0 auto 56px; }
+    .features-header p { color: var(--text-muted); font-size: 1rem; margin-top: 14px; line-height: 1.7; }
+    .features-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+    .feat-card {
+      background: white; border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 24px;
+      transition: var(--transition);
+    }
+    .feat-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 8px 24px rgba(59,130,246,0.1); }
+    .feat-icon {
+      width: 40px; height: 40px; border-radius: var(--radius-sm);
+      background: var(--bg-sidebar); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted); font-size: 0.95rem;
+      margin-bottom: 16px; transition: var(--transition);
+    }
+    .feat-card:hover .feat-icon { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+    .feat-card h3 { font-size: 0.88rem; margin-bottom: 8px; }
+    .feat-card p { color: var(--text-muted); font-size: 0.8rem; line-height: 1.6; }
+
+    /* ============================================================
+       HOW IT WORKS
+    ============================================================ */
+    #howto { background: white; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .steps-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 40px; }
+    .step-card {
+      text-align: center; padding: 32px 24px;
+      background: white; border: 1px solid var(--border);
+      border-radius: var(--radius-md); transition: var(--transition);
+    }
+    .step-card:hover { border-color: var(--accent); box-shadow: 0 8px 24px rgba(59,130,246,0.1); transform: translateY(-3px); }
+    .step-num-wrap {
+      width: 52px; height: 52px; border-radius: 50%; margin: 0 auto 24px;
+      background: var(--bg-sidebar); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-serif); font-size: 1.4rem; color: var(--text-main);
+      box-shadow: var(--shadow-subtle); transition: var(--transition);
+    }
+    .step-card:hover .step-num-wrap { border-color: var(--accent); color: var(--accent); transform: rotate(-5deg); background: var(--accent-light); }
+    .step-card h3 { margin-bottom: 10px; font-size: 0.95rem; }
+    .step-card p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.65; }
+
+    /* ============================================================
+       PRICING SECTION
+    ============================================================ */
+    #pricing { background: var(--bg-page); }
+    .pricing-header { max-width: 560px; margin: 0 auto 56px; }
+    .pricing-header p { color: var(--text-muted); font-size: 1rem; margin-top: 14px; line-height: 1.7; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; align-items: start; }
+    .p-card {
+      background: white; border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 32px 28px;
+      transition: var(--transition); position: relative;
+    }
+    .p-card:hover { border-color: var(--text-main); box-shadow: var(--shadow-hover); }
+    .p-card.popular {
+      border-color: var(--primary); background: var(--primary-dark); color: white;
+    }
+    .p-card.popular:hover { box-shadow: 0 20px 40px rgba(15,23,42,0.2); }
+    .popular-tag {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--primary); color: white;
+      padding: 3px 16px; border-radius: 4px; font-size: 0.68rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap;
+    }
+    .p-name {
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--text-label); margin-bottom: 14px;
+    }
+    .p-card.popular .p-name { color: rgba(255,255,255,0.5); }
+    .p-price {
+      font-family: var(--font-serif); font-size: 3rem; line-height: 1; margin-bottom: 6px;
+    }
+    .p-price sup { font-size: 1rem; font-family: var(--font-sans); font-weight: 600; vertical-align: top; margin-top: 10px; display: inline-block; }
+    .p-price sub { font-size: 0.9rem; font-family: var(--font-sans); font-weight: 400; color: var(--text-muted); }
+    .p-card.popular .p-price sub { color: rgba(255,255,255,0.5); }
+    .p-tagline { color: var(--text-muted); font-size: 0.82rem; margin-bottom: 28px; }
+    .p-card.popular .p-tagline { color: rgba(255,255,255,0.6); }
+    .p-divider { border: none; border-top: 1px solid var(--border); margin: 0 0 20px; }
+    .p-card.popular .p-divider { border-color: rgba(255,255,255,0.1); }
+    .p-feats { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+    .p-feats li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 0.85rem; color: var(--text-main);
+    }
+    .p-feats li i { color: var(--success); width: 14px; margin-top: 1px; flex-shrink: 0; }
+    .p-feats li.no i { color: var(--border); }
+    .p-feats li.no { color: var(--text-label); }
+    .p-card.popular .p-feats li { color: rgba(255,255,255,0.85); }
+    .p-card.popular .p-feats li i { color: rgba(255,255,255,0.5); }
+    .p-card.popular .p-feats li:not(.no) i { color: #6ee7b7; }
+    .p-btn {
+      display: block; text-align: center; padding: 11px;
+      border-radius: var(--radius-sm); font-weight: 600; font-size: 0.88rem;
+      transition: var(--transition); border: 1px solid transparent;
+    }
+    .p-btn.outline { border-color: var(--border); background: white; color: var(--text-main); }
+    .p-btn.outline:hover { border-color: var(--text-main); background: var(--bg-sidebar); }
+    .p-btn.solid  { background: white; color: var(--primary); }
+    .p-btn.solid:hover  { background: var(--primary-bg); }
+
+    /* ============================================================
+       STATS
+    ============================================================ */
+    #stats {
+      background: linear-gradient(135deg, #020617 0%, #0c1f4a 50%, #020617 100%); color: white;
+      padding: 80px 0; border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .stats-row { display: grid; grid-template-columns: repeat(3,1fr); }
+    .stats-row .s-item {
+      text-align: center; padding: 32px;
+      border-right: 1px solid rgba(255,255,255,0.06);
+    }
+    .stats-row .s-item:last-child { border-right: none; }
+    .s-num {
+      font-family: var(--font-serif); font-size: 3.5rem; line-height: 1;
+      margin-bottom: 8px;
+    }
+    .s-lbl { color: rgba(255,255,255,0.45); font-size: 0.8rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* ============================================================
+       TESTIMONIALS
+    ============================================================ */
+    #testimonials { background: var(--bg-page); }
+    .testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+    .testi-card {
+      background: white; border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 28px;
+      transition: var(--transition);
+    }
+    .testi-card:hover { border-color: var(--text-main); box-shadow: var(--shadow-md); }
+    .testi-stars { color: var(--warning); font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 14px; }
+    .testi-text { color: var(--text-muted); font-size: 0.88rem; line-height: 1.75; margin-bottom: 20px; }
+    .testi-author { display: flex; align-items: center; gap: 12px; padding-top: 16px; border-top: 1px solid var(--border-light); }
+    .testi-avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--primary); color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 700; flex-shrink: 0;
+    }
+    .testi-avatar.t2 { background: #3B82F6; }
+    .testi-avatar.t3 { background: var(--success); }
+    .testi-name { font-weight: 700; font-size: 0.88rem; }
+    .testi-role { color: var(--text-label); font-size: 0.75rem; }
+
+    /* ============================================================
+       FINAL CTA
+    ============================================================ */
+    #final-cta {
+      background: linear-gradient(160deg, #020617 0%, #0c1f4a 40%, #1a1040 70%, #020617 100%); color: white;
+      padding: 120px 0; text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .cta-inner { max-width: 640px; margin: 0 auto; }
+    .cta-inner h2 { color: white; margin-bottom: 18px; }
+    .cta-inner p { color: rgba(255,255,255,0.55); font-size: 1rem; margin-bottom: 40px; line-height: 1.7; }
+    .cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-white { background: white; color: var(--primary); }
+    .btn-white:hover { background: var(--primary-bg); }
+    .btn-ghost-white { border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); background: transparent; }
+    .btn-ghost-white:hover { border-color: rgba(255,255,255,0.5); color: white; }
+    .cta-note { font-size: 0.78rem; color: rgba(255,255,255,0.3); margin-top: 24px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      background: white; border-top: 1px solid var(--border); padding: 64px 0 32px;
+    }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+    .footer-brand-lbl { color: var(--text-muted); font-size: 0.85rem; margin: 14px 0 20px; max-width: 270px; line-height: 1.65; }
+    .footer-socials { display: flex; gap: 8px; }
+    .footer-soc-icon {
+      width: 34px; height: 34px; border-radius: var(--radius-sm);
+      background: var(--bg-sidebar); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; color: var(--text-muted);
+      transition: var(--transition);
+    }
+    .footer-soc-icon:hover { border-color: var(--text-main); color: var(--text-main); transform: translateY(-2px); }
+    .footer-col h4 {
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.06em; color: var(--text-label); margin-bottom: 16px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+    .footer-col ul a { color: var(--text-muted); font-size: 0.85rem; transition: var(--transition); }
+    .footer-col ul a:hover { color: var(--text-main); }
+    .footer-bottom {
+      border-top: 1px solid var(--border); padding-top: 24px;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+    }
+    .footer-bottom p, .footer-bottom a { color: var(--text-label); font-size: 0.78rem; }
+    .footer-bottom a:hover { color: var(--text-main); }
+
+    /* ============================================================
+       MOBILE HAMBURGER NAV
+    ============================================================ */
+    .nav-hamburger {
+      display: none; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: var(--radius-sm);
+      border: 1px solid var(--border); background: white;
+      cursor: pointer; transition: var(--transition); flex-shrink: 0;
+      color: var(--text-muted);
+    }
+    .nav-hamburger:hover { border-color: var(--text-main); color: var(--text-main); }
+
+    /* Mobile Drawer */
+    .mobile-drawer {
+      position: fixed; top: 64px; left: 0; right: 0; bottom: 0;
+      background: white; z-index: 999;
+      transform: translateX(-100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+      overflow-y: auto; padding: 24px;
+      border-top: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .mobile-drawer.open { transform: translateX(0); }
+    [dir="rtl"] .mobile-drawer { transform: translateX(100%); }
+    [dir="rtl"] .mobile-drawer.open { transform: translateX(0); }
+
+    .mobile-drawer a {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px; border-radius: var(--radius-sm);
+      font-weight: 500; font-size: 0.95rem; color: var(--text-muted);
+      border: 1px solid transparent; transition: var(--transition);
+    }
+    .mobile-drawer a:hover { background: var(--bg-sidebar); color: var(--text-main); border-color: var(--border); }
+    .mobile-drawer .drawer-divider { height: 1px; background: var(--border); margin: 12px 0; }
+    .mobile-drawer .drawer-cta { background: var(--primary); color: white; justify-content: center; border-radius: var(--radius-sm); }
+    .mobile-drawer .drawer-cta:hover { opacity: 0.88; background: var(--primary); }
+    .mobile-drawer .drawer-lang { display: flex; gap: 6px; padding: 12px 0; }
+
+    /* ============================================================
+       RESPONSIVE — 1200px (large tablets / small laptops)
+    ============================================================ */
+    @media (max-width: 1200px) {
+      .features-grid { grid-template-columns: repeat(3, 1fr); }
+      .hero-grid { gap: 48px; }
+      .footer-grid { grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 32px; }
+    }
+
+    /* ============================================================
+       RESPONSIVE — 1024px (tablets landscape)
+    ============================================================ */
+    @media (max-width: 1024px) {
+      .section { padding: 72px 0; }
+
+      /* Nav */
+      .nav-links, .nav-actions .btn-secondary { display: none; }
+      .nav-hamburger { display: flex; }
+      .nav-actions { gap: 8px; }
+
+      /* Hero */
+      .hero-grid { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+      .hero-sub { margin-inline: auto; }
+      .hero-cta { justify-content: center; }
+      .hero-proof { justify-content: center; max-width: 100%; }
+      .float-card.top-left { left: 0; }
+      .float-card.bot-right { right: 0; }
+
+      /* Solution */
+      .solution-grid { grid-template-columns: 1fr; gap: 40px; }
+
+      /* Features */
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+
+      /* Pricing */
+      .pricing-grid { grid-template-columns: 1fr; max-width: 440px; margin: 0 auto; }
+      .p-card.popular { transform: none; }
+      .p-card.popular:hover { transform: translateY(-3px); }
+
+      /* Testimonials */
+      .testi-grid { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; }
+
+      /* Footer */
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    }
+
+    /* ============================================================
+       RESPONSIVE — 768px (tablets portrait & large phones)
+    ============================================================ */
+    @media (max-width: 768px) {
+      .section { padding: 56px 0; }
+      .container { padding: 0 20px; }
+
+      /* Nav */
+      .nav-actions .btn { display: none; }
+      .nav-actions .lang-switcher { display: flex; }
+
+      /* Hero */
+      h1 { font-size: 2.2rem; }
+      h2 { font-size: 1.7rem; }
+      .hero-cta { flex-direction: column; gap: 10px; }
+      .hero-cta .btn { width: 100%; max-width: 320px; justify-content: center; }
+      .float-card { display: none; }
+      .hero-dashboard { border-radius: var(--radius-md); }
+
+      /* Problem */
+      .problem-grid { grid-template-columns: 1fr; }
+      .problem-intro { margin-bottom: 32px; }
+
+      /* Features */
+      .features-grid { grid-template-columns: 1fr; }
+      .features-header { margin-bottom: 32px; }
+
+      /* Steps */
+      .steps-row { grid-template-columns: 1fr; gap: 16px; }
+
+      /* Stats */
+      .stats-row { grid-template-columns: 1fr; }
+      .stats-row .s-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+      .stats-row .s-item:last-child { border-bottom: none; }
+      .s-num { font-size: 2.8rem; }
+
+      /* Pricing */
+      .pricing-grid { max-width: 100%; }
+      .pricing-header { margin-bottom: 36px; }
+
+      /* Testimonials */
+      .testi-grid { max-width: 100%; }
+
+      /* CTA */
+      .cta-btns { flex-direction: column; }
+      .cta-btns .btn { width: 100%; max-width: 340px; margin-inline: auto; }
+
+      /* Footer */
+      .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+      .footer-bottom { flex-direction: column; text-align: center; gap: 8px; }
+      .footer-bottom div { justify-content: center; }
+
+      /* Marquee */
+      .marquee-track { gap: 28px; }
+    }
+
+    /* ============================================================
+       RESPONSIVE — 480px (phones)
+    ============================================================ */
+    @media (max-width: 480px) {
+      .section { padding: 48px 0; }
+      .container { padding: 0 16px; }
+
+      h1 { font-size: 1.9rem; }
+      h2 { font-size: 1.5rem; }
+
+      /* Nav */
+      .nav-logo { font-size: 1.1rem; }
+      .nav-logo-icon { width: 28px; height: 28px; }
+      .nav-actions .lang-switcher { display: none; } /* moved to drawer */
+
+      /* Hero */
+      #hero { padding: 88px 0 56px; }
+      .hero-eyebrow { font-size: 0.7rem; }
+      .hero-sub { font-size: 0.92rem; }
+      .hero-proof { flex-direction: column; align-items: center; gap: 10px; text-align: center; }
+
+      /* Proof avatars */
+      .proof-avatars span { width: 28px; height: 28px; font-size: 0.6rem; }
+
+      /* Cards pad reduction */
+      .problem-card { padding: 20px; }
+      .feat-card { padding: 18px; }
+      .step-card { padding: 24px 18px; }
+      .testi-card { padding: 20px; }
+      .p-card { padding: 24px 20px; }
+
+      /* AI panel */
+      .ai-panel-header h4 { display: none; }
+      .ai-row { font-size: 0.78rem; }
+
+      /* Stats */
+      .s-num { font-size: 2.4rem; }
+      #stats { padding: 56px 0; }
+
+      /* Section label */
+      .section-label { font-size: 0.6rem; }
+
+      /* Footer CTA */
+      #final-cta { padding: 72px 0; }
+    }
+
+    /* ============================================================
+       RESPONSIVE — 360px (very small phones)
+    ============================================================ */
+    @media (max-width: 360px) {
+      h1 { font-size: 1.7rem; }
+      h2 { font-size: 1.35rem; }
+      .btn-lg { padding: 12px 20px; font-size: 0.88rem; }
+      .p-price { font-size: 2.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       TRANSLATIONS DATA
+  ============================================================ -->
+  <script>
+  const TRANSLATIONS = {
+    fr: {
+      // NAV
+      nav_features: "Fonctionnalités",
+      nav_how: "Comment ça marche",
+      nav_pricing: "Tarifs",
+      nav_testi: "Témoignages",
+      nav_login: "Se connecter",
+      nav_cta: "Commencer gratuitement",
+
+      // HERO
+      hero_eyebrow: "Nouveau · IA Sociale pour le Maroc",
+      hero_h1: "Votre Social Media<br/>sur <em>pilote automatique</em>",
+      hero_sub: "Planifiez, créez et publiez automatiquement sur Facebook, Instagram & LinkedIn. Notre IA s'en occupe — économisez <strong>15h/semaine</strong> et focalisez-vous sur votre vrai business.",
+      hero_cta1: "Essayer gratuitement — 14 jours",
+      hero_cta2: "Voir comment ça marche",
+      hero_proof: "<strong>35 entreprises</strong> au Maroc font confiance à MARS",
+      fc_post: "Post publié ✓",
+      fc_post_lbl: "Instagram · il y a 3 min",
+      fc_ai: "Caption générée",
+      fc_ai_lbl: "IA · Darija + Français",
+
+      // MARQUEE
+      m1: "Scheduling automatique",
+      m2: "Génération de contenu IA",
+      m3: "Réponses automatiques",
+      m4: "Analytics simples",
+      m5: "Facebook · Instagram · LinkedIn",
+      m6: "Zéro compétence requise",
+      m7: "15h économisées/semaine",
+      m8: "Fait pour le Maroc 🇲🇦",
+
+      // PROBLEM
+      prob_label: "Le problème",
+      prob_h2: "Ces problèmes, vous les connaissez bien",
+      prob_sub: "Chaque gérant de petite entreprise au Maroc vit ces frustrations au quotidien.",
+      p1_h: "«&nbsp;J'ai pas le temps de poster&nbsp;»",
+      p1_p: "Le business prend tout. Les réseaux restent silencieux des semaines entières — et votre visibilité chute.",
+      p2_h: "«&nbsp;Je sais pas quoi écrire&nbsp;»",
+      p2_p: "La page blanche vous bloque. Chaque post prend 30 min — pour finalement rien publier.",
+      p3_h: "«&nbsp;Les messages s'accumulent&nbsp;»",
+      p3_p: "Des dizaines de messages non lus. Des clients qui attendent. Des ventes perdues faute de réponses rapides.",
+
+      // SOLUTION
+      sol_label: "La solution",
+      sol_h2: "MARS s'occupe de tout,<br/><em>vous gérez votre business</em>",
+      sol_sub: "Plus de stress pour les réseaux sociaux. Notre IA travaille 24h/24, 7j/7 — pendant que vous faites ce que vous faites de mieux.",
+      sp1_h: "Planification automatique",
+      sp1_p: "Programmez vos posts à l'avance. L'IA publie au meilleur moment pour maximiser votre portée.",
+      sp2_h: "Contenu IA en Darija & Français",
+      sp2_p: "Générez des captions percutantes en secondes. Plus jamais la page blanche.",
+      sp3_h: "Réponses automatiques 24/7",
+      sp3_p: "Aucun client n'attend. L'IA répond aux messages courants instantanément.",
+      ai_prompt: "🤖 Génère un post pour mon restaurant à Casablanca — spécial Ramadan",
+      ai_result_lbl: "Post généré — prêt à publier",
+      ai_result: "🍽️ <strong>Spécial Ramadan !</strong><br/>Tfaddlo 3lina b menu maghribi authentique w prix mzyan 🇲🇦✨<br/><br/>📍 Casablanca · Réservez : 06XX-XXXXXX<br/>#restaurant #Maroc #ramadan",
+      chip_fb: "Facebook",
+      chip_ig: "Instagram",
+      chip_li: "LinkedIn",
+
+      // FEATURES
+      feat_label: "Fonctionnalités",
+      feat_h2: "Tout ce qu'il vous faut.<br/><em>Rien de superflu.</em>",
+      feat_sub: "Des outils puissants mais simples — même sans expérience en marketing digital.",
+      f1_h: "Scheduling automatique",
+      f1_p: "Planifiez une fois par semaine. L'IA publie aux meilleures heures d'engagement.",
+      f2_h: "Captions & idées IA",
+      f2_p: "Générez des textes percutants en Darija, Français ou les deux — adaptés à votre audience.",
+      f3_h: "Auto-réponses",
+      f3_p: "Répondez aux messages et commentaires fréquents automatiquement. Ne ratez aucune vente.",
+      f4_h: "Analytics clairs",
+      f4_p: "Tableau de bord simple. Voyez ce qui marche — sans vous noyer dans des chiffres.",
+      f5_h: "Multi-plateformes",
+      f5_p: "Facebook, Instagram, LinkedIn — gérés depuis un seul endroit.",
+      f6_h: "Bibliothèque visuelle",
+      f6_p: "Templates professionnels prêts à l'emploi pour chaque secteur.",
+      f7_h: "Application mobile",
+      f7_p: "Gérez tout depuis votre téléphone. Approuvez, modifiez, publiez en quelques taps.",
+      f8_h: "Sécurité totale",
+      f8_p: "Connexion sécurisée, permissions contrôlées. Aucun risque pour vos comptes.",
+
+      // HOWTO
+      how_label: "Comment ça marche",
+      how_h2: "<em>3 étapes simples</em><br/>et c'est parti",
+      how_sub: "Pas de formation compliquée. En moins de 10 minutes, votre business est sur pilote automatique.",
+      s1_n: "1",
+      s1_h: "Connectez vos comptes",
+      s1_p: "Reliez Facebook, Instagram et LinkedIn en un clic. Sécurisé, moins de 2 minutes.",
+      s2_n: "2",
+      s2_h: "Générez votre contenu",
+      s2_p: "Décrivez votre activité à l'IA. Elle crée posts, captions et visuels adaptés.",
+      s3_n: "3",
+      s3_h: "MARS fait le reste",
+      s3_p: "L'app publie, répond et analyse 24h/24. Vous, vous vous concentrez sur l'essentiel.",
+
+      // PRICING
+      price_label: "Tarifs",
+      price_h2: "Des prix adaptés aux<br/><em>entrepreneurs marocains</em>",
+      price_sub: "Sans engagement. Sans frais cachés. 14 jours d'essai gratuit. Annulable à tout moment.",
+      plan1_name: "Starter",
+      plan1_tag: "Pour démarrer simplement",
+      plan1_f1: "1 compte social",
+      plan1_f2: "20 posts planifiés/mois",
+      plan1_f3: "30 captions IA/mois",
+      plan1_f4: "Analytics basiques",
+      plan1_f5: "Auto-réponses",
+      plan1_f6: "Multi-plateformes",
+      plan1_btn: "Commencer gratuitement",
+      plan2_name: "Basic",
+      plan2_badge: "⭐ Le Plus Populaire",
+      plan2_tag: "Pour les entreprises en croissance",
+      plan2_f1: "3 comptes sociaux",
+      plan2_f2: "Posts illimités",
+      plan2_f3: "Captions IA illimitées",
+      plan2_f4: "Auto-réponses intelligentes",
+      plan2_f5: "Analytics avancés",
+      plan2_f6: "Facebook + Instagram + LinkedIn",
+      plan2_btn: "Commencer — 14j gratuits",
+      plan3_name: "Pro",
+      plan3_tag: "Pour les équipes & agences",
+      plan3_f1: "Comptes illimités",
+      plan3_f2: "Posts & IA illimités",
+      plan3_f3: "Auto-réponses avancées + CRM",
+      plan3_f4: "Analytics complets + rapports",
+      plan3_f5: "Multi-utilisateurs (5 membres)",
+      plan3_f6: "Support prioritaire 24/7",
+      plan3_btn: "Contacter l'équipe",
+      price_note: "🔒 Paiement sécurisé · Annulez à tout moment · Support en Darija disponible",
+      dh: "DH",
+      month: "/mois",
+
+      // STATS
+      stat1: "35",
+      stat1_lbl: "Entreprises inscrites",
+      stat2: "+10 000",
+      stat2_lbl: "Posts générés / mois",
+      stat3: "95%",
+      stat3_lbl: "Taux de satisfaction",
+
+      // TESTI
+      testi_label: "Témoignages",
+      testi_h2: "Ils nous font confiance",
+      testi_sub: "Des entrepreneurs marocains qui ont transformé leur présence digitale avec MARS.",
+      t1: "Je passais des heures à chercher quoi publier sur Instagram, sans jamais y arriver. Depuis que j'utilise MARS, ma page est active tous les jours — sans que j'aie besoin de m'en occuper !",
+      t1_n: "Sanaa K.",
+      t1_r: "Boutique Mode — Casablanca",
+      t2: "Avant, je payais 1 500 DH/mois pour un community manager. Aujourd'hui avec MARS à 250 DH, mes résultats sont bien meilleurs. L'IA comprend ma clientèle mieux que lui !",
+      t2_n: "Youssef B.",
+      t2_r: "Restaurant — Marrakech",
+      t3: "La fonctionnalité de réponses automatiques est incroyable — mes clients reçoivent une réponse en moins d'une minute, je ne perds plus aucun prospect !",
+      t3_n: "Fatima-Zahra A.",
+      t3_r: "Artisanat & E-commerce — Fès",
+
+      // CTA FINAL
+      cta_label: "Passez à l'action",
+      cta_h2: "Khalih 3lina...<br/><em>revenez à votre business</em>",
+      cta_p: "Chaque jour sans MARS, c'est du temps gaspillé et des clients perdus. Rejoignez <strong>35 entreprises</strong> qui ont déjà passé leur social media en automatique.",
+      cta1: "Commencer gratuitement — 14 jours",
+      cta2: "Voir les tarifs",
+      cta_note: "Aucune carte bancaire requise · Annulable à tout moment",
+
+      // FOOTER
+      f_tagline: "Gérez vos réseaux sociaux automatiquement avec l'IA. Simple, puissant, fait pour le Maroc.",
+      f_product: "Produit",
+      f_company: "Entreprise",
+      f_support: "Support",
+      f_features: "Fonctionnalités",
+      f_pricing: "Tarifs",
+      f_howto: "Comment ça marche",
+      f_updates: "Nouveautés",
+      f_about: "À propos",
+      f_blog: "Blog",
+      f_careers: "Carrières",
+      f_contact: "Contact",
+      f_help: "Centre d'aide",
+      f_whatsapp: "WhatsApp Support",
+      f_email: "contact@marsai.ma",
+      f_privacy: "Confidentialité",
+      f_copy: "© 2025 MARS · Tous droits réservés · 🇲🇦 Made in Morocco",
+      f_terms: "Conditions",
+      f_privlink: "Confidentialité",
+      f_cookies: "Cookies",
+    },
+
+    en: {
+      nav_features: "Features",
+      nav_how: "How It Works",
+      nav_pricing: "Pricing",
+      nav_testi: "Testimonials",
+      nav_login: "Log in",
+      nav_cta: "Start for free",
+
+      hero_eyebrow: "New · AI Social Media for Morocco",
+      hero_h1: "Your Social Media on<br/><em>Autopilot</em>",
+      hero_sub: "Schedule, create and publish automatically on Facebook, Instagram & LinkedIn. Our AI handles it all — save <strong>15h/week</strong> and focus on your real business.",
+      hero_cta1: "Try free — 14 days",
+      hero_cta2: "See how it works",
+      hero_proof: "<strong>+500 businesses</strong> in Morocco trust MARS",
+      fc_post: "Post published ✓",
+      fc_post_lbl: "Instagram · 3 min ago",
+      fc_ai: "Caption generated",
+      fc_ai_lbl: "AI · Darija + French",
+
+      m1: "Automatic Scheduling",
+      m2: "AI Content Generation",
+      m3: "Auto-Replies",
+      m4: "Simple Analytics",
+      m5: "Facebook · Instagram · LinkedIn",
+      m6: "Zero tech skills needed",
+      m7: "15h saved per week",
+      m8: "Built for Morocco 🇲🇦",
+
+      prob_label: "The Problem",
+      prob_h2: "These problems sound familiar",
+      prob_sub: "Every small business owner in Morocco faces these frustrations daily.",
+      p1_h: "\"I don't have time to post\"",
+      p1_p: "Business takes everything. Your pages stay silent for weeks — and your visibility drops.",
+      p2_h: "\"I don't know what to write\"",
+      p2_p: "Writer's block stops you cold. Each post takes 30 min — then nothing gets published.",
+      p3_h: "\"Messages pile up unread\"",
+      p3_p: "Dozens of unread messages. Customers waiting. Sales lost for lack of quick replies.",
+
+      sol_label: "The Solution",
+      sol_h2: "MARS handles everything,<br/><em>you run your business</em>",
+      sol_sub: "No more social media stress. Our AI works 24/7 — while you do what you do best.",
+      sp1_h: "Automatic Scheduling",
+      sp1_p: "Schedule posts in advance. The AI publishes at the best times to maximize your reach.",
+      sp2_h: "AI Content in Darija & French",
+      sp2_p: "Generate compelling captions in seconds. Never face a blank page again.",
+      sp3_h: "24/7 Auto-Replies",
+      sp3_p: "No customer waits. The AI instantly responds to common messages.",
+      ai_prompt: "🤖 Generate a post for my restaurant in Casablanca — Ramadan special",
+      ai_result_lbl: "Post generated — ready to publish",
+      ai_result: "🍽️ <strong>Ramadan Special!</strong><br/>Join us for an authentic Moroccan menu at great prices 🇲🇦✨<br/><br/>📍 Casablanca · Book: 06XX-XXXXXX<br/>#restaurant #Morocco #ramadan",
+      chip_fb: "Facebook",
+      chip_ig: "Instagram",
+      chip_li: "LinkedIn",
+
+      feat_label: "Features",
+      feat_h2: "Everything you need.<br/><em>Nothing you don't.</em>",
+      feat_sub: "Powerful but simple tools — even with zero digital marketing experience.",
+      f1_h: "Auto Scheduling",
+      f1_p: "Plan once a week. The AI posts at peak engagement times automatically.",
+      f2_h: "AI Captions & Ideas",
+      f2_p: "Generate sharp text in Darija, French or both — tailored to your audience.",
+      f3_h: "Auto-Replies",
+      f3_p: "Answer frequent messages and comments automatically. Never miss a sale.",
+      f4_h: "Clear Analytics",
+      f4_p: "Simple dashboard. See what works — without drowning in numbers.",
+      f5_h: "Multi-Platform",
+      f5_p: "Facebook, Instagram, LinkedIn — managed from one place.",
+      f6_h: "Visual Library",
+      f6_p: "Professional ready-to-use templates for every sector.",
+      f7_h: "Mobile App",
+      f7_p: "Manage everything from your phone. Approve, edit, publish in taps.",
+      f8_h: "Full Security",
+      f8_p: "Secure login, controlled permissions. Your accounts are safe.",
+
+      how_label: "How It Works",
+      how_h2: "<em>3 simple steps</em><br/>and you're live",
+      how_sub: "No complicated setup. In less than 10 minutes, your business runs on autopilot.",
+      s1_n: "1", s1_h: "Connect your accounts",
+      s1_p: "Link Facebook, Instagram and LinkedIn in one click. Secure, under 2 minutes.",
+      s2_n: "2", s2_h: "Generate your content",
+      s2_p: "Tell the AI about your business. It generates posts, captions and visuals.",
+      s3_n: "3", s3_h: "MARS does the rest",
+      s3_p: "The app publishes, replies and analyses 24/7. You focus on what matters.",
+
+      price_label: "Pricing",
+      price_h2: "Pricing built for<br/><em>Moroccan entrepreneurs</em>",
+      price_sub: "No commitment. No hidden fees. 14-day free trial. Cancel anytime.",
+      plan1_name: "Starter",
+      plan1_tag: "Get started simply",
+      plan1_f1: "1 social account",
+      plan1_f2: "20 scheduled posts/month",
+      plan1_f3: "30 AI captions/month",
+      plan1_f4: "Basic analytics",
+      plan1_f5: "Auto-replies",
+      plan1_f6: "Multi-platform",
+      plan1_btn: "Start for free",
+      plan2_name: "Basic",
+      plan2_badge: "⭐ Most Popular",
+      plan2_tag: "For growing businesses",
+      plan2_f1: "3 social accounts",
+      plan2_f2: "Unlimited posts",
+      plan2_f3: "Unlimited AI captions",
+      plan2_f4: "Smart auto-replies",
+      plan2_f5: "Advanced analytics",
+      plan2_f6: "Facebook + Instagram + LinkedIn",
+      plan2_btn: "Start — 14 days free",
+      plan3_name: "Pro",
+      plan3_tag: "For teams & agencies",
+      plan3_f1: "Unlimited accounts",
+      plan3_f2: "Unlimited posts & AI",
+      plan3_f3: "Advanced auto-replies + CRM",
+      plan3_f4: "Full analytics + reports",
+      plan3_f5: "Multi-user (5 members)",
+      plan3_f6: "Priority support 24/7",
+      plan3_btn: "Contact the team",
+      price_note: "🔒 Secure payment · Cancel anytime · Darija support available",
+      dh: "DH",
+      month: "/month",
+
+      stat1: "+500", stat1_lbl: "Businesses registered",
+      stat2: "+10,000", stat2_lbl: "Posts generated / month",
+      stat3: "95%", stat3_lbl: "Satisfaction rate",
+
+      testi_label: "Testimonials",
+      testi_h2: "They trust us",
+      testi_sub: "Moroccan entrepreneurs who transformed their digital presence with MARS.",
+      t1: "I used to spend hours thinking about Instagram posts. MARS now gives me a professional page that posts every day — without me doing anything!",
+      t1_n: "Sanaa K.", t1_r: "Fashion Boutique — Casablanca",
+      t2: "Before, I paid 1,500 DH/month for a community manager. Now with MARS at 250 DH, my results are way better. The AI knows my customers better than he did!",
+      t2_n: "Youssef B.", t2_r: "Restaurant — Marrakech",
+      t3: "The auto-replies feature is incredible — customers get an answer in a minute, none of them leave anymore!",
+      t3_n: "Fatima-Zahra A.", t3_r: "Crafts & E-commerce — Fès",
+
+      cta_label: "Take action",
+      cta_h2: "Let MARS handle it...<br/><em>go back to your business</em>",
+      cta_p: "Every day without MARS is wasted time and lost customers. Join <strong>+500 businesses</strong> that have already put their social media on autopilot.",
+      cta1: "Start for free — 14 days",
+      cta2: "View pricing",
+      cta_note: "No credit card required · Cancel anytime",
+
+      f_tagline: "Manage your social media automatically with AI. Simple, powerful, built for Morocco.",
+      f_product: "Product", f_company: "Company", f_support: "Support",
+      f_features: "Features", f_pricing: "Pricing", f_howto: "How It Works", f_updates: "Updates",
+      f_about: "About", f_blog: "Blog", f_careers: "Careers", f_contact: "Contact",
+      f_help: "Help Center", f_whatsapp: "WhatsApp Support", f_email: "contact@marsai.ma", f_privacy: "Privacy Policy",
+      f_copy: "© 2025 MARS · All rights reserved · 🇲🇦 Made in Morocco",
+      f_terms: "Terms", f_privlink: "Privacy", f_cookies: "Cookies",
+    },
+
+    ar: {
+      nav_features: "المميزات",
+      nav_how: "كيف يعمل",
+      nav_pricing: "الأسعار",
+      nav_testi: "آراء العملاء",
+      nav_login: "تسجيل الدخول",
+      nav_cta: "ابدأ مجاناً",
+
+      hero_eyebrow: "جديد · ذكاء اصطناعي للتسويق في المغرب",
+      hero_h1: "سوشيال ميديا ديالك<br/><em>على خاطرنا 🤖</em>",
+      hero_sub: "انشر تلقائياً على فيسبوك وإنستغرام ولينكدإن. الذكاء الاصطناعي يتكفل بكل شيء — وفّر <strong>15 ساعة في الأسبوع</strong> وركّز على عملك.",
+      hero_cta1: "جرّب مجاناً — 14 يوماً",
+      hero_cta2: "شوف كيف يعمل",
+      hero_proof: "<strong>+500 شركة</strong> في المغرب تثق في MARS",
+      fc_post: "تم النشر ✓",
+      fc_post_lbl: "Instagram · منذ 3 دقائق",
+      fc_ai: "كابشن تم توليده",
+      fc_ai_lbl: "AI · الدارجة + الفرنسية",
+
+      m1: "جدولة تلقائية",
+      m2: "توليد محتوى بالذكاء الاصطناعي",
+      m3: "ردود تلقائية",
+      m4: "تحليلات بسيطة",
+      m5: "فيسبوك · إنستغرام · لينكدإن",
+      m6: "لا تحتاج خبرة تقنية",
+      m7: "وفّر 15 ساعة أسبوعياً",
+      m8: "مصنوع للمغرب 🇲🇦",
+
+      prob_label: "المشكلة",
+      prob_h2: "هذه المشاكل تعرفها جيداً",
+      prob_sub: "كل صاحب مشروع صغير في المغرب يعاني من هذه الإحباطات يومياً.",
+      p1_h: "«ما عندي وقت nposti»",
+      p1_p: "العمل يأخذ كل وقتك. الصفحات تبقى صامتة لأسابيع — وتنخفض رؤيتك.",
+      p2_h: "«ما عرفتش آش نكتب»",
+      p2_p: "الصفحة البيضاء تعطّلك. كل منشور يأخذ 30 دقيقة — وأحياناً لا تنشر شيئاً.",
+      p3_h: "«الرسائل كتجمّع...»",
+      p3_p: "عشرات الرسائل غير المقروءة. عملاء ينتظرون. مبيعات ضائعة لعدم الرد السريع.",
+
+      sol_label: "الحل",
+      sol_h2: ":خلّيه علينا<br/><em>أنت ارجع لعملك</em>",
+      sol_sub: "لا مزيد من الضغط بسبب التواصل الاجتماعي. الذكاء الاصطناعي يعمل على مدار الساعة — بينما تركّز على ما تجيده.",
+      sp1_h: "جدولة تلقائية",
+      sp1_p: "خطّط لمنشوراتك مسبقاً. يقوم الذكاء الاصطناعي بالنشر في أفضل الأوقات لتعظيم وصولك.",
+      sp2_h: "محتوى بالذكاء الاصطناعي",
+      sp2_p: "ولّد تعليقات مميزة بالدارجة والفرنسية في ثوانٍ. لا مزيد من الصفحة البيضاء.",
+      sp3_h: "ردود تلقائية 24/7",
+      sp3_p: "لا عميل ينتظر. يرد الذكاء الاصطناعي على الرسائل الشائعة فوراً.",
+      ai_prompt: "🤖 ولّد منشوراً لمطعمي في الدار البيضاء — عرض رمضان",
+      ai_result_lbl: "تم توليد المنشور — جاهز للنشر",
+      ai_result: "🍽️ <strong>عرض رمضان الخاص!</strong><br/>تفضّلو علينا بمنو مغربي أصيل وأسعار مضبوطة 🇲🇦✨<br/><br/>📍 الدار البيضاء · احجز: 06XX-XXXXXX<br/>#مطعم #المغرب #رمضان",
+      chip_fb: "فيسبوك",
+      chip_ig: "إنستغرام",
+      chip_li: "لينكدإن",
+
+      feat_label: "المميزات",
+      feat_h2: "كل ما تحتاجه.<br/><em>بدون تعقيد.</em>",
+      feat_sub: "أدوات قوية وسهلة — حتى بدون خبرة في التسويق الرقمي.",
+      f1_h: "جدولة تلقائية", f1_p: "خطّط مرة في الأسبوع. يقوم الذكاء الاصطناعي بالنشر في أوقات الذروة.",
+      f2_h: "تعليقات ذكية", f2_p: "ولّد نصوصاً جذابة بالدارجة أو الفرنسية — مناسبة لجمهورك.",
+      f3_h: "ردود تلقائية", f3_p: "رد على الرسائل والتعليقات تلقائياً. لا تفوّت أي عملية بيع.",
+      f4_h: "تحليلات واضحة", f4_p: "لوحة تحكم بسيطة. اعرف ما يصلح — بدون أرقام معقدة.",
+      f5_h: "متعدد المنصات", f5_p: "فيسبوك وإنستغرام ولينكدإن — كلها من مكان واحد.",
+      f6_h: "مكتبة بصرية", f6_p: "قوالب احترافية جاهزة لكل قطاع.",
+      f7_h: "تطبيق جوال", f7_p: "أدر كل شيء من هاتفك. وافق وعدّل وانشر بنقرات.",
+      f8_h: "أمان كامل", f8_p: "تسجيل دخول آمن وأذونات محكومة. حساباتك في أمان.",
+
+      how_label: "كيف يعمل",
+      how_h2: "<em>3 خطوات بسيطة</em><br/>وأنت منطلق",
+      how_sub: "لا إعداد معقد. في أقل من 10 دقائق، عملك على الطيار الآلي.",
+      s1_n: "١", s1_h: "ربط حساباتك",
+      s1_p: "اربط فيسبوك وإنستغرام ولينكدإن بنقرة واحدة. آمن وأقل من دقيقتين.",
+      s2_n: "٢", s2_h: "توليد المحتوى",
+      s2_p: "أخبر الذكاء الاصطناعي عن نشاطك. سيولّد المنشورات والتعليقات والصور.",
+      s3_n: "٣", s3_h: "MARS يتكفّل بالباقي",
+      s3_p: "التطبيق ينشر ويرد ويحلّل 24/7. أنت تركّز على الأساسي.",
+
+      price_label: "الأسعار",
+      price_h2: "أسعار مناسبة<br/><em>لرجال الأعمال المغاربة</em>",
+      price_sub: "بدون التزام. بدون رسوم خفية. تجربة مجانية 14 يوماً. إلغاء في أي وقت.",
+      plan1_name: "Starter",
+      plan1_tag: "للبداية البسيطة",
+      plan1_f1: "حساب تواصل اجتماعي واحد",
+      plan1_f2: "20 منشوراً مجدولاً/شهر",
+      plan1_f3: "30 تعليقاً بالذكاء الاصطناعي/شهر",
+      plan1_f4: "تحليلات أساسية",
+      plan1_f5: "ردود تلقائية",
+      plan1_f6: "متعدد المنصات",
+      plan1_btn: "ابدأ مجاناً",
+      plan2_name: "Basic",
+      plan2_badge: "⭐ الأكثر شعبية",
+      plan2_tag: "للشركات المتنامية",
+      plan2_f1: "3 حسابات تواصل اجتماعي",
+      plan2_f2: "منشورات غير محدودة",
+      plan2_f3: "تعليقات ذكية غير محدودة",
+      plan2_f4: "ردود تلقائية ذكية",
+      plan2_f5: "تحليلات متقدمة",
+      plan2_f6: "فيسبوك + إنستغرام + لينكدإن",
+      plan2_btn: "ابدأ — 14 يوماً مجاناً",
+      plan3_name: "Pro",
+      plan3_tag: "للفرق والوكالات",
+      plan3_f1: "حسابات غير محدودة",
+      plan3_f2: "منشورات وذكاء اصطناعي غير محدودين",
+      plan3_f3: "ردود متقدمة + CRM",
+      plan3_f4: "تحليلات كاملة + تقارير",
+      plan3_f5: "متعدد المستخدمين (5 أعضاء)",
+      plan3_f6: "دعم أولوي 24/7",
+      plan3_btn: "تواصل مع الفريق",
+      price_note: "🔒 دفع آمن · إلغاء في أي وقت · دعم بالدارجة متوفر",
+      dh: "درهم",
+      month: "/شهر",
+
+      stat1: "+500", stat1_lbl: "شركة مسجّلة",
+      stat2: "+10,000", stat2_lbl: "منشور يُولَّد شهرياً",
+      stat3: "95%", stat3_lbl: "نسبة الرضا",
+
+      testi_label: "آراء العملاء",
+      testi_h2: "يثقون فينا",
+      testi_sub: "رجال أعمال مغاربة حوّلوا حضورهم الرقمي مع MARS.",
+      t1: "ولاهي كنت كنبقى نفكر في البوسطات ديال إنستغرام وكنت كتخسراني داك الوقت. MARS دابا عندي صفحة بروفيسيونيل، كتبوسطي كل يوم، وأنا في حالي!",
+      t1_n: "سناء ك.", t1_r: "بوتيك أزياء — الدار البيضاء",
+      t2: "قبل، كنت كنخلص 1500 درهم في الشهر لمدير مجتمع. دابا مع MARS بـ 250 درهم، النتائج أحسن بكثير. الذكاء الاصطناعي كيعرف عملائي أكثر منه!",
+      t2_n: "يوسف ب.", t2_r: "مطعم — مراكش",
+      t3: "الردود التلقائية هي أحسن ميزة — العملاء كيشوفو جواب في دقيقة، ما عاد كيتسافط شي عميل!",
+      t3_n: "فاطمة الزهراء أ.", t3_r: "صناعة تقليدية وتجارة إلكترونية — فاس",
+
+      cta_label: "اتخذ القرار",
+      cta_h2: "خلّيه علينا...<br/><em>وارجع لعملك</em>",
+      cta_p: "كل يوم بدون MARS هو وقت ضائع وعملاء مفقودون. انضم لـ <strong>+500 شركة</strong> أتمتت وجودها الرقمي بالفعل.",
+      cta1: "ابدأ مجاناً — 14 يوماً",
+      cta2: "عرض الأسعار",
+      cta_note: "لا حاجة لبطاقة بنكية · إلغاء في أي وقت",
+
+      f_tagline: "أدر حساباتك على التواصل الاجتماعي تلقائياً بالذكاء الاصطناعي. بسيط، قوي، مصنوع للمغرب.",
+      f_product: "المنتج", f_company: "الشركة", f_support: "الدعم",
+      f_features: "المميزات", f_pricing: "الأسعار", f_howto: "كيف يعمل", f_updates: "المستجدات",
+      f_about: "من نحن", f_blog: "المدوّنة", f_careers: "الوظائف", f_contact: "اتصل بنا",
+      f_help: "مركز المساعدة", f_whatsapp: "دعم واتساب", f_email: "contact@marsai.ma", f_privacy: "سياسة الخصوصية",
+      f_copy: "© 2025 MARS · جميع الحقوق محفوظة · 🇲🇦 صُنع في المغرب",
+      f_terms: "الشروط", f_privlink: "الخصوصية", f_cookies: "ملفات تعريف الارتباط",
+    }
+  };
+
+  // Apply translations
+  function applyLang(lang) {
+    const t = TRANSLATIONS[lang];
+    if (!t) return;
+    const html = document.documentElement;
+    html.setAttribute('lang', lang);
+    html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+    html.setAttribute('data-lang', lang);
+
+    // Update all elements with data-i18n
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (t[key] !== undefined) {
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+          el.placeholder = t[key];
+        } else {
+          el.innerHTML = t[key];
+        }
+      }
+    });
+
+    // Store preference
+    localStorage.setItem('mars_lang', lang);
+
+    // Update active button
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-lng') === lang);
+    });
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const saved = localStorage.getItem('mars_lang') || 'fr';
+    applyLang(saved);
+  });
+  </script>
+
+  <!-- ============================================================
+       NAV
+  ============================================================ -->
+  <nav id="nav">
+    <div class="container nav-inner">
+      <a href="#" class="nav-logo">
+        <div class="nav-logo-icon">
+          <img src="mars_logo.png" alt="MARS"
+               onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\'fas fa-rocket\' style=\'color:white;font-size:.8rem;\'></i>'"/>
+        </div>
+        MARS
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#features" data-i18n="nav_features">Fonctionnalités</a></li>
+        <li><a href="#howto" data-i18n="nav_how">Comment ça marche</a></li>
+        <li><a href="#pricing" data-i18n="nav_pricing">Tarifs</a></li>
+        <li><a href="#testimonials" data-i18n="nav_testi">Témoignages</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <div class="lang-switcher">
+          <button class="lang-btn" data-lng="fr" onclick="applyLang('fr')">FR</button>
+          <button class="lang-btn" data-lng="en" onclick="applyLang('en')">EN</button>
+          <button class="lang-btn" data-lng="ar" onclick="applyLang('ar')">AR</button>
+        </div>
+        <a href="https://mars-su0i.onrender.com/login/" class="btn btn-secondary" data-i18n="nav_login">Se connecter</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdWQ9ziVm90WRXcaqrZWhqzC3Q6x6y8QpQg_DroSEta59H3TA/viewform?usp=publish-editor" target="_blank" rel="noopener" class="btn btn-primary" data-i18n="nav_cta">Commencer gratuitement</a>
+        <!-- Hamburger (mobile only) -->
+        <button class="nav-hamburger" id="navHamburger" aria-label="Menu" aria-expanded="false">
+          <i class="fas fa-bars" id="hamburgerIcon"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+    <a href="#features" class="drawer-link" onclick="closeDrawer()"><i class="fas fa-bolt" style="width:16px;"></i> <span data-i18n="nav_features">Fonctionnalités</span></a>
+    <a href="#howto"   class="drawer-link" onclick="closeDrawer()"><i class="fas fa-map-signs" style="width:16px;"></i> <span data-i18n="nav_how">Comment ça marche</span></a>
+    <a href="#pricing" class="drawer-link" onclick="closeDrawer()"><i class="fas fa-tag" style="width:16px;"></i> <span data-i18n="nav_pricing">Tarifs</span></a>
+    <a href="#testimonials" class="drawer-link" onclick="closeDrawer()"><i class="fas fa-quote-left" style="width:16px;"></i> <span data-i18n="nav_testi">Témoignages</span></a>
+    <div class="drawer-divider"></div>
+    <div class="drawer-lang">
+      <button class="lang-btn" data-lng="fr" onclick="applyLang('fr');closeDrawer()">FR</button>
+      <button class="lang-btn" data-lng="en" onclick="applyLang('en');closeDrawer()">EN</button>
+      <button class="lang-btn" data-lng="ar" onclick="applyLang('ar');closeDrawer()">AR</button>
+    </div>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdWQ9ziVm90WRXcaqrZWhqzC3Q6x6y8QpQg_DroSEta59H3TA/viewform?usp=publish-editor" target="_blank" rel="noopener" class="drawer-cta" onclick="closeDrawer()" data-i18n="nav_cta">Commencer gratuitement</a>
+  </div>
+
+  <!-- ============================================================
+       HERO SECTION
+  ============================================================ -->
+  <section id="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <!-- Copy -->
+        <div>
+          <div class="hero-eyebrow">
+            <span class="dot"></span>
+            <span data-i18n="hero_eyebrow">Nouveau · IA Sociale pour le Maroc</span>
+          </div>
+          <h1 class="hero-headline" data-i18n="hero_h1">
+            Votre Social Media<br/>sur <em>pilote automatique</em>
+          </h1>
+          <p class="hero-sub" data-i18n="hero_sub">
+            Planifiez, créez et publiez automatiquement sur Facebook, Instagram & LinkedIn. Notre IA s'en occupe — économisez <strong>15h/semaine</strong> et focalisez-vous sur votre vrai business.
+          </p>
+          <div class="hero-cta">
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdWQ9ziVm90WRXcaqrZWhqzC3Q6x6y8QpQg_DroSEta59H3TA/viewform?usp=publish-editor" target="_blank" rel="noopener" class="btn btn-primary btn-lg" id="hero-cta-btn">
+              <i class="fas fa-rocket"></i>
+              <span data-i18n="hero_cta1">Essayer gratuitement — 14 jours</span>
+            </a>
+            <a href="#howto" class="btn btn-secondary btn-lg" id="hero-watch-btn">
+              <i class="fas fa-play" style="font-size:.75rem;"></i>
+              <span data-i18n="hero_cta2">Voir comment ça marche</span>
+            </a>
+          </div>
+          <div class="hero-proof">
+            <div class="proof-avatars">
+              <span>SK</span><span>YB</span><span>FA</span><span>+</span>
+            </div>
+            <p class="proof-text" data-i18n="hero_proof">
+              <strong>+500 entreprises</strong> au Maroc font confiance à MARS
+            </p>
+          </div>
+        </div>
+
+        <!-- Visual -->
+        <div class="hero-visual">
+          <div class="float-card top-left">
+            <div class="fc-icon"><i class="fab fa-instagram"></i></div>
+            <div>
+              <div class="fc-val" data-i18n="fc_post">Post publié ✓</div>
+              <div class="fc-lbl" data-i18n="fc_post_lbl">Instagram · il y a 3 min</div>
+            </div>
+          </div>
+
+          <div class="hero-dashboard">
+            <img src="dashboard.png" alt="Dashboard MARS AI"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+            <div class="dash-placeholder" style="display:none;">
+              <i class="fas fa-chart-line"></i>
+              <span style="font-weight:600;color:var(--text-muted);">Dashboard MARS</span>
+              <span style="font-size:0.75rem;color:var(--text-label);">Cockpit · Campagnes · Planning</span>
+            </div>
+          </div>
+
+          <div class="float-card bot-right">
+            <div class="fc-icon"><i class="fas fa-robot"></i></div>
+            <div>
+              <div class="fc-val" data-i18n="fc_ai">Caption générée</div>
+              <div class="fc-lbl" data-i18n="fc_ai_lbl">AI · Darija + Français</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       MARQUEE STRIP
+  ============================================================ -->
+  <div id="marquee">
+    <div class="marquee-track">
+      <div class="marquee-item"><i class="fas fa-calendar-alt"></i><span data-i18n="m1">Scheduling automatique</span></div>
+      <span class="marquee-sep">·</span>
+      <div class="marquee-item"><i class="fas fa-robot"></i><span data-i18n="m2">Génération de contenu IA</span></div>
+      <span class="marquee-sep">·</span>
+      <div class="marquee-item"><i class="fas fa-reply"></i><span data-i18n="m3">Réponses automatiques</span></div>
+      <span class="marquee-sep">·</span>
+      <div class="marquee-item"><i class="fas fa-chart-bar"></i><span data-i18n="m4">Analytics simples</span></div>
+      <span class="marquee-sep">·</span>
+      <div class="marquee-item"><i class="fas fa-share-alt"></i><span data-i18n="m5">Facebook · Instagram · LinkedIn</span></div>
+      <span class="marquee-sep">·</span>
+      <div class="marquee-item"><i class="fas fa-bolt"></i><span data-i18n="m6">Zéro compétence requise</span></div>
+      <span class="marquee-sep">·</span>
+      <div class="marquee-item"><i class="fas fa-clock"></i><span data-i18n="m7">15h économisées/semaine</span></div>
+      <span class="marquee-sep">·</span>
+      <div class="marquee-item"><i class="fas fa-flag"></i><span data-i18n="m8">Fait pour le Maroc 🇲🇦</span></div>
+      <!-- Duplicate for seamless loop -->
+      <span class="marquee-sep">·</span>
+      <div class="marquee-item"><i class="fas fa-calendar-alt"></i><span data-i18n="m1">Scheduling automatique</span></div>
+      <span class="marquee-sep">·</span>
+      <div class="marquee-item"><i class="fas fa-robot"></i><span data-i18n="m2">Génération de contenu IA</span></div>
+      <span class="marquee-sep">·</span>
+      <div class="marquee-item"><i class="fas fa-reply"></i><span data-i18n="m3">Réponses automatiques</span></div>
+      <span class="marquee-sep">·</span>
+      <div class="marquee-item"><i class="fas fa-chart-bar"></i><span data-i18n="m4">Analytics simples</span></div>
+      <span class="marquee-sep">·</span>
+      <div class="marquee-item"><i class="fas fa-share-alt"></i><span data-i18n="m5">Facebook · Instagram · LinkedIn</span></div>
+      <span class="marquee-sep">·</span>
+      <div class="marquee-item"><i class="fas fa-bolt"></i><span data-i18n="m6">Zéro compétence requise</span></div>
+      <span class="marquee-sep">·</span>
+      <div class="marquee-item"><i class="fas fa-clock"></i><span data-i18n="m7">15h économisées/semaine</span></div>
+      <span class="marquee-sep">·</span>
+      <div class="marquee-item"><i class="fas fa-flag"></i><span data-i18n="m8">Fait pour le Maroc 🇲🇦</span></div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       PROBLEM SECTION
+  ============================================================ -->
+  <section id="problem" class="section">
+    <div class="container">
+      <div class="problem-intro text-center">
+        <div class="section-label"><i class="fas fa-exclamation-triangle"></i> <span data-i18n="prob_label">Le problème</span></div>
+        <h2 data-i18n="prob_h2">Ces problèmes, vous les connaissez bien</h2>
+        <p data-i18n="prob_sub">Chaque gérant de petite entreprise au Maroc vit ces frustrations au quotidien.</p>
+      </div>
+      <div class="problem-grid">
+        <div class="problem-card">
+          <div class="pc-icon"><i class="fas fa-clock"></i></div>
+          <h3 data-i18n="p1_h">«&nbsp;J'ai pas le temps de poster&nbsp;»</h3>
+          <p data-i18n="p1_p">Le business prend tout. Les réseaux restent silencieux des semaines entières — et votre visibilité chute.</p>
+        </div>
+        <div class="problem-card">
+          <div class="pc-icon"><i class="fas fa-pen"></i></div>
+          <h3 data-i18n="p2_h">«&nbsp;Je sais pas quoi écrire&nbsp;»</h3>
+          <p data-i18n="p2_p">La page blanche vous bloque. Chaque post prend 30 min — pour finalement rien publier.</p>
+        </div>
+        <div class="problem-card">
+          <div class="pc-icon"><i class="fas fa-comments"></i></div>
+          <h3 data-i18n="p3_h">«&nbsp;Les messages s'accumulent&nbsp;»</h3>
+          <p data-i18n="p3_p">Des dizaines de messages non lus. Des clients qui attendent. Des ventes perdues faute de réponses rapides.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SOLUTION SECTION
+  ============================================================ -->
+  <section id="solution" class="section">
+    <div class="container">
+      <div class="solution-grid">
+        <!-- App Screenshot -->
+        <div class="screenshot-frame">
+          <div class="screenshot-bar">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <span class="url-bar">mars-su0i.onrender.com</span>
+          </div>
+          <img src="screenshot.png" alt="MARS App Dashboard" loading="lazy"
+               onerror="this.parentElement.innerHTML+='<div style=\'height:340px;display:flex;align-items:center;justify-content:center;color:#94A3B8;flex-direction:column;gap:12px\'><i class=\'fas fa-desktop\' style=\'font-size:3rem;opacity:.2\'></i><span style=\'font-size:.85rem\'>MARS Dashboard</span></div>'" />
+        </div>
+
+        <!-- Pills -->
+        <div>
+          <div class="section-label"><i class="fas fa-check-circle"></i> <span data-i18n="sol_label">La solution</span></div>
+          <h2 style="margin-bottom:14px;" data-i18n="sol_h2">
+            MARS s'occupe de tout,<br/><em>vous gérez votre business</em>
+          </h2>
+          <p style="color:var(--text-muted);font-size:.92rem;margin-bottom:32px;line-height:1.7;" data-i18n="sol_sub">
+            Plus de stress pour les réseaux sociaux. Notre IA travaille 24h/24, 7j/7 — pendant que vous faites ce que vous faites de mieux.
+          </p>
+          <div class="solution-pills">
+            <div class="s-pill">
+              <div class="s-pill-icon"><i class="fas fa-calendar-alt"></i></div>
+              <div>
+                <h3 data-i18n="sp1_h">Planification automatique</h3>
+                <p data-i18n="sp1_p">Programmez vos posts à l'avance. L'IA publie au meilleur moment pour maximiser votre portée.</p>
+              </div>
+            </div>
+            <div class="s-pill">
+              <div class="s-pill-icon"><i class="fas fa-magic"></i></div>
+              <div>
+                <h3 data-i18n="sp2_h">Contenu IA en Darija & Français</h3>
+                <p data-i18n="sp2_p">Générez des captions percutantes en secondes. Plus jamais la page blanche.</p>
+              </div>
+            </div>
+            <div class="s-pill">
+              <div class="s-pill-icon"><i class="fas fa-reply"></i></div>
+              <div>
+                <h3 data-i18n="sp3_h">Réponses automatiques 24/7</h3>
+                <p data-i18n="sp3_p">Aucun client n'attend. L'IA répond aux messages courants instantanément.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FEATURES SECTION
+  ============================================================ -->
+  <section id="features" class="section">
+    <div class="container">
+      <div class="features-header text-center">
+        <div class="section-label"><i class="fas fa-bolt"></i> <span data-i18n="feat_label">Fonctionnalités</span></div>
+        <h2 data-i18n="feat_h2">Tout ce qu'il vous faut.<br/><em>Rien de superflu.</em></h2>
+        <p data-i18n="feat_sub">Des outils puissants mais simples — même sans expérience en marketing digital.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feat-card">
+          <div class="feat-icon"><i class="fas fa-calendar-check"></i></div>
+          <h3 data-i18n="f1_h">Scheduling automatique</h3>
+          <p data-i18n="f1_p">Planifiez une fois par semaine. L'IA publie aux meilleures heures d'engagement.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon"><i class="fas fa-magic"></i></div>
+          <h3 data-i18n="f2_h">Captions & idées IA</h3>
+          <p data-i18n="f2_p">Générez des textes percutants en Darija, Français ou les deux — adaptés à votre audience.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon"><i class="fas fa-reply-all"></i></div>
+          <h3 data-i18n="f3_h">Auto-réponses</h3>
+          <p data-i18n="f3_p">Répondez aux messages et commentaires fréquents automatiquement. Ne ratez aucune vente.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon"><i class="fas fa-chart-bar"></i></div>
+          <h3 data-i18n="f4_h">Analytics clairs</h3>
+          <p data-i18n="f4_p">Tableau de bord simple. Voyez ce qui marche — sans vous noyer dans des chiffres.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon"><i class="fas fa-layer-group"></i></div>
+          <h3 data-i18n="f5_h">Multi-plateformes</h3>
+          <p data-i18n="f5_p">Facebook, Instagram, LinkedIn — gérés depuis un seul endroit.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon"><i class="fas fa-images"></i></div>
+          <h3 data-i18n="f6_h">Bibliothèque visuelle</h3>
+          <p data-i18n="f6_p">Templates professionnels prêts à l'emploi pour chaque secteur.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon"><i class="fas fa-mobile-alt"></i></div>
+          <h3 data-i18n="f7_h">Application mobile</h3>
+          <p data-i18n="f7_p">Gérez tout depuis votre téléphone. Approuvez, modifiez, publiez en quelques taps.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon"><i class="fas fa-shield-alt"></i></div>
+          <h3 data-i18n="f8_h">Sécurité totale</h3>
+          <p data-i18n="f8_p">Connexion sécurisée, permissions contrôlées. Aucun risque pour vos comptes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       HOW IT WORKS
+  ============================================================ -->
+  <section id="howto" class="section">
+    <div class="container">
+      <div class="text-center" style="max-width:520px;margin:0 auto 60px;">
+        <div class="section-label"><i class="fas fa-map-signs"></i> <span data-i18n="how_label">Comment ça marche</span></div>
+        <h2 data-i18n="how_h2"><em>3 étapes simples</em><br/>et c'est parti</h2>
+        <p style="color:var(--text-muted);margin-top:14px;font-size:.95rem;line-height:1.7;" data-i18n="how_sub">
+          Pas de formation compliquée. En moins de 10 minutes, votre business est sur pilote automatique.
+        </p>
+      </div>
+      <div class="steps-row">
+        <div class="step-card">
+          <div class="step-num-wrap"><span data-i18n="s1_n">1</span></div>
+          <h3 data-i18n="s1_h">Connectez vos comptes</h3>
+          <p data-i18n="s1_p">Reliez Facebook, Instagram et LinkedIn en un clic. Sécurisé, moins de 2 minutes.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num-wrap"><span data-i18n="s2_n">2</span></div>
+          <h3 data-i18n="s2_h">Générez votre contenu</h3>
+          <p data-i18n="s2_p">Décrivez votre activité à l'IA. Elle crée posts, captions et visuels adaptés.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num-wrap"><span data-i18n="s3_n">3</span></div>
+          <h3 data-i18n="s3_h">MARS fait le reste</h3>
+          <p data-i18n="s3_p">L'app publie, répond et analyse 24h/24. Vous, vous vous concentrez sur l'essentiel.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PRICING SECTION
+  ============================================================ -->
+  <section id="pricing" class="section" style="background:var(--bg-page);">
+    <div class="container">
+      <div class="pricing-header text-center">
+        <div class="section-label"><i class="fas fa-tag"></i> <span data-i18n="price_label">Tarifs</span></div>
+        <h2 data-i18n="price_h2">Des prix adaptés aux<br/><em>entrepreneurs marocains</em></h2>
+        <p data-i18n="price_sub">Sans engagement. Sans frais cachés. 14 jours d'essai gratuit. Annulable à tout moment.</p>
+      </div>
+      <div class="pricing-grid">
+
+        <!-- Starter -->
+        <div class="p-card" id="plan-starter">
+          <div class="p-name" data-i18n="plan1_name">Starter</div>
+          <div class="p-price">150<sup data-i18n="dh">DH</sup><sub data-i18n="month">/mois</sub></div>
+          <div class="p-tagline" data-i18n="plan1_tag">Pour démarrer simplement</div>
+          <hr class="p-divider"/>
+          <ul class="p-feats">
+            <li><i class="fas fa-check"></i><span data-i18n="plan1_f1">1 compte social</span></li>
+            <li><i class="fas fa-check"></i><span data-i18n="plan1_f2">20 posts planifiés/mois</span></li>
+            <li><i class="fas fa-check"></i><span data-i18n="plan1_f3">30 captions IA/mois</span></li>
+            <li><i class="fas fa-check"></i><span data-i18n="plan1_f4">Analytics basiques</span></li>
+            <li class="no"><i class="fas fa-times"></i><span data-i18n="plan1_f5">Auto-réponses</span></li>
+            <li class="no"><i class="fas fa-times"></i><span data-i18n="plan1_f6">Multi-plateformes</span></li>
+          </ul>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSdWQ9ziVm90WRXcaqrZWhqzC3Q6x6y8QpQg_DroSEta59H3TA/viewform?usp=publish-editor" target="_blank" rel="noopener" class="p-btn outline" id="starter-btn" data-i18n="plan1_btn">Commencer gratuitement</a>
+        </div>
+
+        <!-- Basic (Popular) -->
+        <div class="p-card popular" id="plan-basic">
+          <div class="popular-tag" data-i18n="plan2_badge">⭐ Le Plus Populaire</div>
+          <div class="p-name" data-i18n="plan2_name">Basic</div>
+          <div class="p-price">250<sup data-i18n="dh">DH</sup><sub data-i18n="month">/mois</sub></div>
+          <div class="p-tagline" data-i18n="plan2_tag">Pour les entreprises en croissance</div>
+          <hr class="p-divider"/>
+          <ul class="p-feats">
+            <li><i class="fas fa-check"></i><span data-i18n="plan2_f1">3 comptes sociaux</span></li>
+            <li><i class="fas fa-check"></i><span data-i18n="plan2_f2">Posts illimités</span></li>
+            <li><i class="fas fa-check"></i><span data-i18n="plan2_f3">Captions IA illimitées</span></li>
+            <li><i class="fas fa-check"></i><span data-i18n="plan2_f4">Auto-réponses intelligentes</span></li>
+            <li><i class="fas fa-check"></i><span data-i18n="plan2_f5">Analytics avancés</span></li>
+            <li><i class="fas fa-check"></i><span data-i18n="plan2_f6">Facebook + Instagram + LinkedIn</span></li>
+          </ul>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSdWQ9ziVm90WRXcaqrZWhqzC3Q6x6y8QpQg_DroSEta59H3TA/viewform?usp=publish-editor" target="_blank" rel="noopener" class="p-btn solid" id="basic-btn" data-i18n="plan2_btn">Commencer — 14j gratuits</a>
+        </div>
+
+        <!-- Pro -->
+        <div class="p-card" id="plan-pro">
+          <div class="p-name" data-i18n="plan3_name">Pro</div>
+          <div class="p-price">400<sup data-i18n="dh">DH</sup><sub data-i18n="month">/mois</sub></div>
+          <div class="p-tagline" data-i18n="plan3_tag">Pour les équipes & agences</div>
+          <hr class="p-divider"/>
+          <ul class="p-feats">
+            <li><i class="fas fa-check"></i><span data-i18n="plan3_f1">Comptes illimités</span></li>
+            <li><i class="fas fa-check"></i><span data-i18n="plan3_f2">Posts & IA illimités</span></li>
+            <li><i class="fas fa-check"></i><span data-i18n="plan3_f3">Auto-réponses avancées + CRM</span></li>
+            <li><i class="fas fa-check"></i><span data-i18n="plan3_f4">Analytics complets + rapports</span></li>
+            <li><i class="fas fa-check"></i><span data-i18n="plan3_f5">Multi-utilisateurs (5 membres)</span></li>
+            <li><i class="fas fa-check"></i><span data-i18n="plan3_f6">Support prioritaire 24/7</span></li>
+          </ul>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSdWQ9ziVm90WRXcaqrZWhqzC3Q6x6y8QpQg_DroSEta59H3TA/viewform?usp=publish-editor" target="_blank" rel="noopener" class="p-btn outline" id="pro-btn" data-i18n="plan3_btn">Contacter l'equipe</a>
+        </div>
+      </div>
+      <p style="text-align:center;color:var(--text-label);font-size:.78rem;margin-top:28px;" data-i18n="price_note">
+        🔒 Paiement sécurisé · Annulez à tout moment · Support en Darija disponible
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       STATS SECTION
+  ============================================================ -->
+  <section id="stats">
+    <div class="container">
+      <div class="stats-row">
+        <div class="s-item">
+          <div class="s-num" id="stat-1">35</div>
+          <div class="s-lbl" data-i18n="stat1_lbl">Entreprises inscrites</div>
+        </div>
+        <div class="s-item">
+          <div class="s-num" id="stat-2">+10 000</div>
+          <div class="s-lbl" data-i18n="stat2_lbl">Posts générés / mois</div>
+        </div>
+        <div class="s-item">
+          <div class="s-num" id="stat-3">95%</div>
+          <div class="s-lbl" data-i18n="stat3_lbl">Taux de satisfaction</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       TESTIMONIALS
+  ============================================================ -->
+  <section id="testimonials" class="section">
+    <div class="container">
+      <div class="text-center" style="max-width:520px;margin:0 auto 52px;">
+        <div class="section-label"><i class="fas fa-quote-left"></i> <span data-i18n="testi_label">Témoignages</span></div>
+        <h2 data-i18n="testi_h2">Ils nous font confiance</h2>
+        <p style="color:var(--text-muted);margin-top:14px;font-size:.92rem;" data-i18n="testi_sub">
+          Des entrepreneurs marocains qui ont transformé leur présence digitale avec MARS.
+        </p>
+      </div>
+      <div class="testi-grid">
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text" data-i18n="t1">
+            "Wlahi knt kanbqa nfikr f les posts dial Instagram w knt katkhasrani dak lwa9t. MARS daba 3ndi page professionnelle, katposti koll yom, w ana f7ali!"
+          </p>
+          <div class="testi-author">
+            <div class="testi-avatar">SK</div>
+            <div>
+              <div class="testi-name" data-i18n="t1_n">Sanaa K.</div>
+              <div class="testi-role" data-i18n="t1_r">Boutique Mode — Casablanca</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text" data-i18n="t2">
+            "Avant, je payais 1 500 DH/mois pour un community manager. Aujourd'hui avec MARS à 250 DH, mes résultats sont bien meilleurs."
+          </p>
+          <div class="testi-author">
+            <div class="testi-avatar t2">YB</div>
+            <div>
+              <div class="testi-name" data-i18n="t2_n">Youssef B.</div>
+              <div class="testi-role" data-i18n="t2_r">Restaurant — Marrakech</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text" data-i18n="t3">
+            "Les auto-réponses c'est la meilleure feature — les clients kaychofou jawab f dakika, ma3d kaytsifat shi client!"
+          </p>
+          <div class="testi-author">
+            <div class="testi-avatar t3">FA</div>
+            <div>
+              <div class="testi-name" data-i18n="t3_n">Fatima-Zahra A.</div>
+              <div class="testi-role" data-i18n="t3_r">Artisanat & E-commerce — Fès</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FINAL CTA
+  ============================================================ -->
+  <section id="final-cta">
+    <div class="container">
+      <div class="cta-inner">
+        <div class="section-label" style="background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.1);color:rgba(255,255,255,0.45);margin:0 auto 24px;">
+          <i class="fas fa-rocket"></i> <span data-i18n="cta_label">Passez à l'action</span>
+        </div>
+        <h2 data-i18n="cta_h2">
+          Khalih 3lina...<br/><em>revenez à votre business</em>
+        </h2>
+        <p data-i18n="cta_p">
+          Chaque jour sans MARS, c'est du temps gaspillé et des clients perdus. Rejoignez <strong>+500 entreprises</strong> qui ont déjà passé leur social media en automatique.
+        </p>
+        <div class="cta-btns">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSdWQ9ziVm90WRXcaqrZWhqzC3Q6x6y8QpQg_DroSEta59H3TA/viewform?usp=publish-editor" target="_blank" rel="noopener" class="btn btn-white btn-lg" id="final-cta-btn">
+            <i class="fas fa-rocket"></i>
+            <span data-i18n="cta1">Commencer gratuitement — 14 jours</span>
+          </a>
+          <a href="#pricing" class="btn btn-ghost-white btn-lg" id="final-view-btn" data-i18n="cta2">Voir les tarifs</a>
+        </div>
+        <div class="cta-note">
+          <i class="fas fa-lock" style="font-size:.75rem;"></i>
+          <span data-i18n="cta_note">Aucune carte bancaire requise · Annulable à tout moment</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a href="#" class="nav-logo" style="margin-bottom:14px;display:inline-flex;">
+            <div class="nav-logo-icon">
+              <img src="static/img/mars_logo.png" alt="MARS"
+                   onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\'fas fa-rocket\' style=\'color:white;font-size:.7rem;\'></i>'"/>
+            </div>
+            MARS
+          </a>
+          <p class="footer-brand-lbl" data-i18n="f_tagline">
+            Gérez vos réseaux sociaux automatiquement avec l'IA. Simple, puissant, fait pour le Maroc.
+          </p>
+          <div class="footer-socials">
+            <a href="https://wa.me/212657935596" target="_blank" rel="noopener" class="footer-soc-icon" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4 data-i18n="f_product">Produit</h4>
+          <ul>
+            <li><a href="#features" data-i18n="f_features">Fonctionnalités</a></li>
+            <li><a href="#pricing" data-i18n="f_pricing">Tarifs</a></li>
+            <li><a href="#howto" data-i18n="f_howto">Comment ça marche</a></li>
+            <li><a href="#" data-i18n="f_updates">Nouveautés</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 data-i18n="f_company">Entreprise</h4>
+          <ul>
+            <li><a href="#" data-i18n="f_about">À propos</a></li>
+            <li><a href="#" data-i18n="f_blog">Blog</a></li>
+            <li><a href="#" data-i18n="f_careers">Carrières</a></li>
+            <li><a href="#" data-i18n="f_contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 data-i18n="f_support">Support</h4>
+          <ul>
+            <li><a href="#" data-i18n="f_help">Centre d'aide</a></li>
+            <li><a href="https://wa.me/212657935596" target="_blank" rel="noopener"><i class="fab fa-whatsapp" style="margin-right:5px;"></i>+212 657 935 596</a></li>
+            <li><a href="mailto:maysolutions25@gmail.com">maysolutions25@gmail.com</a></li>
+            <li><a href="#" data-i18n="f_privacy">Confidentialité</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p data-i18n="f_copy">© 2025 MARS · Tous droits réservés · 🇲🇦 Made in Morocco</p>
+        <div style="display:flex;gap:20px;">
+          <a href="#" data-i18n="f_terms">Conditions</a>
+          <a href="#" data-i18n="f_privlink">Confidentialité</a>
+          <a href="#" data-i18n="f_cookies">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       JAVASCRIPT
+  ============================================================ -->
+  <script>
+    // --- Nav scroll effect ---
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    }, { passive: true });
+
+    // --- Mobile Drawer ---
+    const drawer   = document.getElementById('mobileDrawer');
+    const hamburger = document.getElementById('navHamburger');
+    const hIcon    = document.getElementById('hamburgerIcon');
+    let drawerOpen = false;
+
+    function openDrawer() {
+      drawerOpen = true;
+      drawer.classList.add('open');
+      drawer.setAttribute('aria-hidden', 'false');
+      hamburger.setAttribute('aria-expanded', 'true');
+      hIcon.className = 'fas fa-times';
+      document.body.style.overflow = 'hidden';
+    }
+    function closeDrawer() {
+      drawerOpen = false;
+      drawer.classList.remove('open');
+      drawer.setAttribute('aria-hidden', 'true');
+      hamburger.setAttribute('aria-expanded', 'false');
+      hIcon.className = 'fas fa-bars';
+      document.body.style.overflow = '';
+    }
+    hamburger.addEventListener('click', () => drawerOpen ? closeDrawer() : openDrawer());
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+      if (drawerOpen && !drawer.contains(e.target) && !hamburger.contains(e.target)) closeDrawer();
+    });
+    // Close on resize to desktop
+    window.addEventListener('resize', () => { if (window.innerWidth > 1024) closeDrawer(); });
+
+    // --- Scroll fade-in (matching app's subtle card hover) ---
+    const fadeTargets = document.querySelectorAll(
+      '.problem-card, .feat-card, .testi-card, .p-card, .step-card, .s-pill'
+    );
+    const fadeObs = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => {
+            e.target.style.opacity = '1';
+            e.target.style.transform = 'translateY(0)';
+          }, i * 60);
+          fadeObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+
+    fadeTargets.forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(16px)';
+      el.style.transition = 'opacity 0.45s ease, transform 0.45s ease, border-color 0.25s ease, box-shadow 0.25s ease';
+      fadeObs.observe(el);
+    });
+
+    // --- Stats counter animation ---
+    function animateCounter(el, raw) {
+      const isPercent = raw.includes('%');
+      const hasK = raw.includes('000') || raw.includes(',000');
+      const cleanNum = parseInt(raw.replace(/\D/g, ''));
+      let start = null;
+      const dur = 1800;
+      const step = (ts) => {
+        if (!start) start = ts;
+        const prog = Math.min((ts - start) / dur, 1);
+        const eased = 1 - Math.pow(1 - prog, 3);
+        const val = Math.floor(eased * cleanNum);
+        if (raw.startsWith('+')) {
+          el.textContent = '+' + val.toLocaleString('fr-FR');
+        } else if (isPercent) {
+          el.textContent = val + '%';
+        } else {
+          el.textContent = val.toLocaleString('fr-FR');
+        }
+        if (prog < 1) requestAnimationFrame(step);
+        else el.textContent = raw; // reset to exact
+      };
+      requestAnimationFrame(step);
+    }
+
+    const statsSection = document.getElementById('stats');
+    const statEls = [
+      { el: document.getElementById('stat-1'), val: '35' },
+      { el: document.getElementById('stat-2'), val: '+10 000' },
+      { el: document.getElementById('stat-3'), val: '95%' },
+    ];
+    let statsTriggered = false;
+    const statObs = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && !statsTriggered) {
+        statsTriggered = true;
+        statEls.forEach(({el, val}) => animateCounter(el, val));
+      }
+    }, { threshold: 0.3 });
+    if (statsSection) statObs.observe(statsSection);
+  </script>
+
+</body>
+</html>
